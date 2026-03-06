@@ -20,6 +20,7 @@ keywords = [
     "openai",
     "anthropic",
     "ollama",
+    "llama.cpp",
     "prompt",
     "optimization",
     "cost-reduction",

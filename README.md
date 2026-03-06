@@ -2,7 +2,6 @@
 
 **Async semantic caching for LLM API calls — reduce costs with one decorator.**
 
-[![PyPI](https://img.shields.io/pypi/v/semantic-llm-cache)](https://pypi.org/project/semantic-llm-cache/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/semantic-llm-cache)](https://pypi.org/project/semantic-llm-cache/)
 
@@ -21,16 +20,17 @@ LLM API calls are expensive and slow. In production applications, **20-40% of pr
 
 ## What changed from the original
 
+
 | Area                 | Original                  | This fork                                                           |
-| -------------------- | ------------------------- | ------------------------------------------------------------------- |
+| ---------------------- | --------------------------- | --------------------------------------------------------------------- |
 | Backends             | sync (`sqlite3`, `redis`) | async (`aiosqlite`, `redis.asyncio`)                                |
 | `@cache` decorator   | sync only                 | auto-detects async/sync                                             |
-| `EmbeddingCache`     | sync `encode()`           | adds `async aencode()` via `asyncio.to_thread`                      |
-| `CacheContext`       | sync only                 | supports both `with` and `async with`                               |
-| `CachedLLM`          | `chat()`                  | adds `achat()`                                                      |
+| `EmbeddingCache`     | sync`encode()`            | adds`async aencode()` via `asyncio.to_thread`                       |
+| `CacheContext`       | sync only                 | supports both`with` and `async with`                                |
+| `CachedLLM`          | `chat()`                  | adds`achat()`                                                       |
 | Utility functions    | sync                      | `clear_cache`, `invalidate`, `warm_cache`, `export_cache` all async |
-| `StorageBackend` ABC | sync abstract methods     | all abstract methods are `async def`                                |
-| Min Python           | 3.9                       | 3.10 (uses `X \| Y` union syntax)                                   |
+| `StorageBackend` ABC | sync abstract methods     | all abstract methods are`async def`                                 |
+| Min Python           | 3.9                       | 3.10 (uses`X | Y` union syntax)                                     |
 
 ## Installation
 
@@ -198,14 +198,15 @@ async def my_llm_function(prompt: str) -> str:
 
 ### Parameters
 
-| Parameter    | Type          | Default     | Description                                               |
-| ------------ | ------------- | ----------- | --------------------------------------------------------- |
-| `similarity` | `float`       | `1.0`       | Cosine similarity threshold (1.0 = exact, 0.9 = semantic) |
-| `ttl`        | `int \| None` | `3600`      | Time-to-live in seconds (None = never expires)            |
-| `backend`    | `Backend`     | `None`      | Storage backend (None = in-memory)                        |
-| `namespace`  | `str`         | `"default"` | Isolate different use cases                               |
-| `enabled`    | `bool`        | `True`      | Enable/disable caching                                    |
-| `key_func`   | `Callable`    | `None`      | Custom cache key function                                 |
+
+| Parameter    | Type         | Default     | Description                                               |
+| -------------- | -------------- | ------------- | ----------------------------------------------------------- |
+| `similarity` | `float`      | `1.0`       | Cosine similarity threshold (1.0 = exact, 0.9 = semantic) |
+| `ttl`        | `int | None` | `3600`      | Time-to-live in seconds (None = never expires)            |
+| `backend`    | `Backend`    | `None`      | Storage backend (None = in-memory)                        |
+| `namespace`  | `str`        | `"default"` | Isolate different use cases                               |
+| `enabled`    | `bool`       | `True`      | Enable/disable caching                                    |
+| `key_func`   | `Callable`   | `None`      | Custom cache key function                                 |
 
 ### Utility Functions
 
@@ -221,19 +222,21 @@ from semantic_llm_cache.stats import (
 
 ## Backends
 
-| Backend         | Description                          | I/O                       |
-| --------------- | ------------------------------------ | ------------------------- |
+
+| Backend         | Description                          | I/O                        |
+| ----------------- | -------------------------------------- | ---------------------------- |
 | `MemoryBackend` | In-memory LRU (default)              | none — runs in event loop |
-| `SQLiteBackend` | Persistent, file-based (`aiosqlite`) | async non-blocking        |
-| `RedisBackend`  | Distributed (`redis.asyncio`)        | async non-blocking        |
+| `SQLiteBackend` | Persistent, file-based (`aiosqlite`) | async non-blocking         |
+| `RedisBackend`  | Distributed (`redis.asyncio`)        | async non-blocking         |
 
 ## Embedding Providers
 
-| Provider                      | Quality                      | Notes                       |
-| ----------------------------- | ---------------------------- | --------------------------- |
-| `DummyEmbeddingProvider`      | hash-only, no semantic match | zero deps, default          |
-| `SentenceTransformerProvider` | high (local model)           | requires `[semantic]` extra |
-| `OpenAIEmbeddingProvider`     | high (API)                   | requires `[openai]` extra   |
+
+| Provider                      | Quality                      | Notes                      |
+| ------------------------------- | ------------------------------ | ---------------------------- |
+| `DummyEmbeddingProvider`      | hash-only, no semantic match | zero deps, default         |
+| `SentenceTransformerProvider` | high (local model)           | requires`[semantic]` extra |
+| `OpenAIEmbeddingProvider`     | high (API)                   | requires`[openai]` extra   |
 
 Embedding inference is offloaded via `asyncio.to_thread` — model loading is blocking and should be done at application startup, not on first request.
 
@@ -250,8 +253,9 @@ embedding = await embedding_cache.aencode("my prompt")
 
 ## Performance
 
+
 | Metric                     | Value                                    |
-| -------------------------- | ---------------------------------------- |
+| ---------------------------- | ------------------------------------------ |
 | Cache hit latency          | <10ms                                    |
 | Embedding overhead on miss | ~50ms (sentence-transformers, offloaded) |
 | Typical hit rate           | 25-40%                                   |
@@ -275,5 +279,5 @@ MIT — see [LICENSE](LICENSE).
 
 ## Credits
 
-Original library by **Karthick Raja M** ([@karthyick](https://github.com/karthyick)).  
+Original library by **Karthick Raja M** ([@karthyick](https://github.com/karthyick)).
 Async conversion by this fork.
