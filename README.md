@@ -54,8 +54,13 @@ pip install ".[all]"
 Or install directly via pip from git:
 
 ```bash
-pip install "git+https://github.com/nomyo-ai/.git"
-pip install "git+https://github.com/nomyo-ai/async-semantic-llm-cache.git[semantic]"
+# Core only
+pip install "git+https://github.com/nomyo-ai/async-semantic-llm-cache.git"
+
+# With extras — use PEP 508 @ syntax (extras after the URL don't work with pip)
+pip install "semantic-llm-cache[semantic] @ git+https://github.com/nomyo-ai/async-semantic-llm-cache.git"
+pip install "semantic-llm-cache[redis] @ git+https://github.com/nomyo-ai/async-semantic-llm-cache.git"
+pip install "semantic-llm-cache[all] @ git+https://github.com/nomyo-ai/async-semantic-llm-cache.git"
 ```
 
 ## Quick Start
